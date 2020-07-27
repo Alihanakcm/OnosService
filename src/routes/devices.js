@@ -2,7 +2,10 @@ var express = require("express");
 var app = express();
 var superagent = require("superagent");
 
+// require("dotenv").config();
+
 var API = "http://192.168.56.1:8181/onos/v1/devices";
+console.log(API);
 app
   .route("/devices")
   .get(async (req, res) => {
