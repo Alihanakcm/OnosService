@@ -1,9 +1,8 @@
 var express = require("express");
-var app = express();
+var route = express();
 const superagent = require("superagent");
 
-require("dotenv").config();
-app.get("/devices", (req, res) => {
+route.get("/devices", (req, res) => {
   try {
     res.send("grld");
     superagent
@@ -19,4 +18,5 @@ app.get("/devices", (req, res) => {
     res.send(error);
   }
 });
-var server = app.listen(5000);
+
+module.exports = route;
