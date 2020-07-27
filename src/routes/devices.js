@@ -1,22 +1,79 @@
 var express = require("express");
-var route = express();
-const superagent = require("superagent");
+var app = express();
+var superagent = require("superagent");
 
-route.get("/devices", (req, res) => {
+var API = "http://192.168.56.1:8181/onos/v1/devices";
+app
+  .route("/devices")
+  .get(async (req, res) => {
+    try {
+      await superagent
+        .get(API)
+        .auth((usr = "onos"), (pass = "rocks"))
+        .end((err, response) => {
+          if (err) throw err;
+          res.send(JSON.parse(response.text));
+        });
+    } catch (error) {
+      res.send(error);
+    }
+  })
+  .post(async (req, res) => {
+    try {
+      await superagent
+        .post(`${API}/${req.query.id}/portstate/${req.query.portid}`)
+        .send(req.body)
+        .auth((usr = "onos"), (pass = "rocks"))
+        .end((err, response) => {
+          if (err) throw err;
+          res.send("port durumu değişti");
+        });
+    } catch (error) {
+      res.send(error);
+    }
+  });
+
+app.get("/devices/:id/ports", async (req, res) => {
   try {
-    res.send("grld");
-    superagent
-      .get("http://192.168.56.1:8181/onos/v1/devices")
+    await superagent
+      .get(`${API}/${req.params.id}/ports`)
       .auth((usr = "onos"), (pass = "rocks"))
-      .end((err, res) => {
+      .end((err, response) => {
         if (err) throw err;
-        console.log("hadi adadsd");
-        console.log(JSON.parse(res.text));
+        res.send(JSON.parse(response.text));
       });
-    console.log("geldisds");
   } catch (error) {
     res.send(error);
   }
 });
 
-module.exports = route;
+app
+  .route("/devices/:val")
+  .get(async (req, res) => {
+    try {
+      await superagent
+        .get(API + "/" + req.params.val)
+        .auth((usr = "onos"), (pass = "rocks"))
+        .end((err, response) => {
+          if (err) throw err;
+          res.send(JSON.parse(response.text));
+        });
+    } catch (error) {
+      res.send(error);
+    }
+  })
+  .delete(async (req, res) => {
+    try {
+      await superagent
+        .delete(API + "/" + req.params.val)
+        .auth((usr = "onos"), (pass = "rocks"))
+        .end((err, response) => {
+          if (err) throw err;
+          res.send(JSON.parse(response.text));
+        });
+    } catch (error) {
+      res.send(error);
+    }
+  });
+
+module.exports = app;
