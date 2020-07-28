@@ -13,5 +13,6 @@ app.use(bodyParser.json());
 app.use(routes.devices);
 app.use(routes.applications);
 app.use(routes.statistics);
+app.use(routes.flows);
 
 app.listen(PORT, () => console.log("live on : " + PORT));
