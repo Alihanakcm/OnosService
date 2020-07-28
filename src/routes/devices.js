@@ -1,11 +1,10 @@
 var express = require("express");
 var app = express();
 var superagent = require("superagent");
-
 // require("dotenv").config();
 
 var API = "http://192.168.56.1:8181/onos/v1/devices";
-console.log(API);
+
 app
   .route("/devices")
   .get(async (req, res) => {
@@ -15,24 +14,24 @@ app
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
           if (err) throw err;
-          res.send(JSON.parse(response.text));
+          res.status(200).send(JSON.parse(response.text));
         });
     } catch (error) {
-      res.send(error);
+      res.status(error.status).send();
     }
   })
   .post(async (req, res) => {
     try {
       await superagent
-        .post(`${API}/${req.query.id}/portstate/${req.query.portid}`)
+        .post(`${API}/${req.query.id}/portstate/${req.query.portId}`)
         .send(req.body)
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
           if (err) throw err;
-          res.send("port durumu değişti");
+          res.status(200).send("port durumu değişti");
         });
     } catch (error) {
-      res.send(error);
+      res.status(error.status).send();
     }
   });
 
@@ -43,10 +42,10 @@ app.get("/devices/:id/ports", async (req, res) => {
       .auth((usr = "onos"), (pass = "rocks"))
       .end((err, response) => {
         if (err) throw err;
-        res.send(JSON.parse(response.text));
+        res.status(200).send(JSON.parse(response.text));
       });
   } catch (error) {
-    res.send(error);
+    res.status(error.status).send();
   }
 });
 
@@ -59,10 +58,10 @@ app
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
           if (err) throw err;
-          res.send(JSON.parse(response.text));
+          res.status(200).send(JSON.parse(response.text));
         });
     } catch (error) {
-      res.send(error);
+      res.status(error.status).send();
     }
   })
   .delete(async (req, res) => {
@@ -72,10 +71,10 @@ app
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
           if (err) throw err;
-          res.send(JSON.parse(response.text));
+          res.status(200).send(JSON.parse(response.text));
         });
     } catch (error) {
-      res.send(error);
+      res.status(error.status).send();
     }
   });
 
