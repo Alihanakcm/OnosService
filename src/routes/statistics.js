@@ -103,7 +103,6 @@ app.route("/statistics/ports/:deviceId/:port").get(async (req, res) => {
 
 app.route("/statistics/flows/tables/:deviceId?").get(async (req, res) => {
   try {
-    console.log(req.params.deviceId);
     switch (req.params.deviceId) {
       case undefined:
         await superagent
@@ -134,7 +133,9 @@ app.route("/statistics/flows/link").get(async (req, res) => {
   try {
     if (req.query.device != undefined && req.query.port != undefined) {
       await superagent
-        .get(`${API}/flows/link?device=${req.query.device}&port=${req.query.port}`)
+        .get(
+          `${API}/flows/link?device=${req.query.device}&port=${req.query.port}`
+        )
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
           if (err) throw err;
