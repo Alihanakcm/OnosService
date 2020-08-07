@@ -1,6 +1,7 @@
 var express = require("express");
 var app = express();
 var superagent = require("superagent");
+const { json } = require("body-parser");
 // require("dotenv").config();
 
 var API = "http://192.168.56.1:8181/onos/v1/devices";
@@ -14,7 +15,7 @@ app
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
           if (err) throw err;
-          res.status(200).send(JSON.parse(response.text));
+          res.status(200).send(response.body.devices);
         });
     } catch (error) {
       res.status(error.status).send();
