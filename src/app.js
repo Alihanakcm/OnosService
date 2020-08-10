@@ -11,6 +11,11 @@ app.use(bodyParser.json());
 //require("dotenv").config();
 
 app.use(function (req, res, next) {
+  req.header("Access-Control-Allow-Origin", "*");
+  req.header(
+    "Access-Control-Allow-Headers",
+    "Origin,X-Requested-With,Content-Type,Accept"
+  );
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
@@ -18,7 +23,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
-
+app.use(cors());
 app.use(routes.devices);
 app.use(routes.applications);
 app.use(routes.statistics);
