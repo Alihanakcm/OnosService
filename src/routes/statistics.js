@@ -11,7 +11,7 @@ app.route("/statistics/ports/:deviceId").get(async (req, res) => {
       .auth((usr = "onos"), (pass = "rocks"))
       .end((err, response) => {
         if (err) throw err;
-        res.status(200).send(JSON.parse(response.text));
+        res.status(200).send(response.body.statistics[0].ports);
       });
   } catch (error) {
     console.log(error);
@@ -80,7 +80,7 @@ app.route("/statistics/delta/ports/:deviceId").get(async (req, res) => {
       .auth((usr = "onos"), (pass = "rocks"))
       .end((err, response) => {
         if (err) throw err;
-        res.status(200).send(JSON.parse(response.text));
+        res.status(200).send(response.body.statistics[0].ports);
       });
   } catch (error) {
     res.status(error.status).send();
@@ -110,7 +110,7 @@ app.route("/statistics/flows/tables/:deviceId?").get(async (req, res) => {
           .auth((usr = "onos"), (pass = "rocks"))
           .end((err, response) => {
             if (err) throw err;
-            res.status(200).send(JSON.parse(response.text));
+            res.status(200).send(response.body.statistics[0].table);
           });
         break;
 
@@ -120,7 +120,7 @@ app.route("/statistics/flows/tables/:deviceId?").get(async (req, res) => {
           .auth((usr = "onos"), (pass = "rocks"))
           .end((err, response) => {
             if (err) throw err;
-            res.status(200).send(JSON.parse(response.text));
+            res.status(200).send(response.body.statistics[0].table);
           });
         break;
     }
@@ -163,7 +163,7 @@ app.route("/statistics/flows/link").get(async (req, res) => {
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
           if (err) throw err;
-          res.status(200).send(JSON.parse(response.text));
+          res.status(200).send(response.body.loads);
         });
     }
   } catch (error) {
