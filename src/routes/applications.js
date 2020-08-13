@@ -11,7 +11,7 @@ app.route("/applications").get(async (req, res) => {
       .auth((usr = "onos"), (pass = "rocks"))
       .end((err, response) => {
         if (err) throw err;
-        res.send(JSON.parse(response.text));
+        res.send(response.body.applications);
       });
   } catch (error) {}
 });
