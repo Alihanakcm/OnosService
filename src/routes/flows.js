@@ -11,7 +11,7 @@ app.get("/flows/table/:tableId", async (req, res) => {
       .auth((usr = "onos"), (pass = "rocks"))
       .end((err, response) => {
         if (err) throw err;
-        res.status(200).send(JSON.parse(response.text));
+        res.status(200).send(response.body);
       });
   } catch (error) {
     res.status(error.status).send();
@@ -26,21 +26,22 @@ app
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
           if (err) throw err;
-          res.status(200).send(JSON.parse(response.text));
+          res.status(200).send(response.body.flows);
         });
     } catch (error) {
       res.status(error.status).send();
     }
   })
   .post(async (req, res) => {
+    console.log(req.body);
     try {
       await superagent
         .post(API + "?appId=" + req.query.appId)
-        .send(req.body)
+        .send(req.body)  
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
           if (err) throw err;
-          res.status(200).send(JSON.parse(response.text));
+          res.status(200).send(response.body.flows);
         });
     } catch (error) {
       res.status(error.status).send();
@@ -54,7 +55,7 @@ app
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
           if (err) throw err;
-          res.status(200).send(JSON.parse(response.text));
+          res.status(200).send("Deleted");
         });
     } catch (error) {
       res.status(error.status).send();
@@ -112,7 +113,7 @@ app
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
           if (err) throw err;
-          res.status(200).send(response.text);
+          res.status(200).send(response.body.flows[0]);
         });
     } catch (error) {
       res.status(error.status).send();
@@ -139,8 +140,9 @@ app
         .get(API + "/" + req.params.deviceId)
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
-          if (err) throw err;
-          res.status(200).send(JSON.parse(response.text));
+          if (err && err.status != 404) throw err;
+          if (response.status != 200) res.send("[]");
+          else res.status(200).send(response.body.flows);
         });
     } catch (error) {
       res.status(error.status).send();
