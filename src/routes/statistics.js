@@ -39,7 +39,7 @@ app.route("/statistics/ports").get(async (req, res) => {
       .auth((usr = "onos"), (pass = "rocks"))
       .end((err, response) => {
         if (err) throw err;
-        res.status(200).send(JSON.parse(response.text));
+        res.status(200).send(response.body.statistics);
       });
   } catch (error) {
     res.status(error.status).send();
