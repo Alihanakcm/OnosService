@@ -4,17 +4,31 @@ var superagent = require("superagent");
 
 var API = "http://192.168.56.1:8181/onos/v1/applications";
 
-app.route("/applications").get(async (req, res) => {
-  try {
-    await superagent
-      .get(API)
-      .auth((usr = "onos"), (pass = "rocks"))
-      .end((err, response) => {
-        if (err) throw err;
-        res.send(response.body.applications);
-      });
-  } catch (error) {}
-});
+app
+  .route("/applications")
+  .get(async (req, res) => {
+    try {
+      await superagent
+        .get(API)
+        .auth((usr = "onos"), (pass = "rocks"))
+        .end((err, response) => {
+          if (err) throw err;
+          res.send(response.body.applications);
+        });
+    } catch (error) {}
+  })
+  .post(async (req, res) => {
+    try {
+      await superagent
+        .post(API + "?activate=" + req.query.activate)
+        .send(req.body)
+        .auth((usr = "onos"), (pass = "rocks"))
+        .end((err, response) => {
+          if (err) throw err;
+          res.send(response.body);
+        });
+    } catch (error) {}
+  });
 
 app
   .route("/applications/:name")
@@ -44,5 +58,4 @@ app
       console.log(error);
     }
   });
-
 module.exports = app;
