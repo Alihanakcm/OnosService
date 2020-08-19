@@ -10,6 +10,29 @@ app.use(bodyParser.json());
 
 //require("dotenv").config();
 
+var getRawBody = require("raw-body");
+app.use(function (req, res, next) {
+  console.log(req.body);
+  if (req.headers["content-type"] === "application/octet-stream") {
+    console.log("data octet");
+    getRawBody(
+      req,
+      {
+        length: req.headers["content-length"],
+        encoding: req.charset,
+      },
+      function (err, string) {
+        if (err) return next(err);
+
+        req.body = string;
+        next();
+      }
+    );
+  } else {
+    next();
+  }
+});
+
 app.use(function (req, res, next) {
   req.header("Access-Control-Allow-Origin", "*");
   req.header(
