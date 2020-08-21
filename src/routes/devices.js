@@ -59,10 +59,9 @@ app
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
           if (err) throw err;
-          if(req.params.val=='ports')
-          res.status(200).send(response.body.ports);
-          else
-          res.status(200).send(response.body);
+          if (req.params.val == "ports")
+            res.status(200).send(response.body.ports);
+          else res.status(200).send(response.body);
         });
     } catch (error) {
       res.status(error.status).send();
@@ -75,7 +74,7 @@ app
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
           if (err) throw err;
-          res.status(200).send(JSON.parse(response.text));
+          res.send("Removed");
         });
     } catch (error) {
       res.status(error.status).send();

@@ -12,9 +12,7 @@ app.use(bodyParser.json());
 
 var getRawBody = require("raw-body");
 app.use(function (req, res, next) {
-  console.log(req.body);
   if (req.headers["content-type"] === "application/octet-stream") {
-    console.log("data octet");
     getRawBody(
       req,
       {
@@ -34,6 +32,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(function (req, res, next) {
+  console.log(req.method + " " + req.url);
   req.header("Access-Control-Allow-Origin", "*");
   req.header(
     "Access-Control-Allow-Headers",

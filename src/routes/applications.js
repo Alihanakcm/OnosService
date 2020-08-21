@@ -21,10 +21,11 @@ app
     try {
       await superagent
         .post(API + "?activate=" + req.query.activate)
+        .set("Content-Type", "application/octet-stream")
         .send(req.body)
         .auth((usr = "onos"), (pass = "rocks"))
         .end((err, response) => {
-          if (err) throw err;
+          if (err) console.log(err.message);
           res.send(response.body);
         });
     } catch (error) {}
