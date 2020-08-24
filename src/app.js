@@ -2,6 +2,7 @@ var express = require("express");
 var app = express();
 var routes = require("./routes/index");
 var bodyParser = require("body-parser");
+var middleware = require('./middlewares/index')
 var cors = require("cors");
 var PORT = 5000;
 
@@ -10,41 +11,9 @@ app.use(bodyParser.json());
 
 //require("dotenv").config();
 
-var getRawBody = require("raw-body");
-app.use(function (req, res, next) {
-  if (req.headers["content-type"] === "application/octet-stream") {
-    getRawBody(
-      req,
-      {
-        length: req.headers["content-length"],
-        encoding: req.charset,
-      },
-      function (err, string) {
-        if (err) return next(err);
+app.use(middleware.rawBody);
 
-        req.body = string;
-        next();
-      }
-    );
-  } else {
-    next();
-  }
-});
-
-app.use(function (req, res, next) {
-  console.log(req.method + " " + req.url);
-  req.header("Access-Control-Allow-Origin", "*");
-  req.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept"
-  );
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept"
-  );
-  next();
-});
+app.use(middleware.corsConfig);
 app.use(cors());
 app.use(routes.devices);
 app.use(routes.applications);
